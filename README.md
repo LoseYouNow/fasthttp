@@ -1,23 +1,23 @@
-# FastHTTP - µ¥Í·ÎÄ¼şC++ HTTP¿Í»§¶Ë¿â
+# FastHTTP - Single Header C++ HTTP Client Library
 
-FastHTTPÊÇÒ»¸öÇáÁ¿¼¶¡¢Ò×ÓÃµÄC++ HTTP¿Í»§¶Ë¿â£¬Ö»ĞèÒª°üº¬Ò»¸öÍ·ÎÄ¼ş¼´¿ÉÊ¹ÓÃ¡£Ö§³ÖHTTPºÍHTTPSÇëÇó£¬¼æÈİC++14±ê×¼¡£
+FastHTTP is a lightweight, easy-to-use C++ HTTP client library that requires only including a single header file. Supports HTTP and HTTPS requests and is compatible with C++14 standard.
 
-## ÌØĞÔ
+## Features
 
-- **µ¥Í·ÎÄ¼ş**: Ö»Ğè°üº¬ `fasthttp.hpp` ¼´¿ÉÊ¹ÓÃ
-- **ÍêÕûµÄHTTPÖ§³Ö**: Ö§³ÖGET, POST, PUT, DELETE, HEAD, OPTIONS, PATCH·½·¨
-- **HTTPSÖ§³Ö**: ÔÚWindowsÉÏÊ¹ÓÃWinINet£¬ÔÚLinuxÉÏÊ¹ÓÃOpenSSL
-- **¼òµ¥Ò×ÓÃ**: Ìá¹©Á´Ê½APIºÍÈ«¾Ö±ã½İº¯Êı
-- **×Ô¶¨ÒåÇëÇóÍ·**: Ö§³ÖÉèÖÃÈÎÒâHTTPÇëÇóÍ·
-- **JSONÖ§³Ö**: ÄÚÖÃJSONÇëÇó±ã½İ·½·¨
-- **Éí·İÑéÖ¤**: Ö§³ÖBasic AuthºÍBearer Token
-- **³¬Ê±¿ØÖÆ**: ¿ÉÅäÖÃÇëÇó³¬Ê±Ê±¼ä
-- **Òì³£´¦Àí**: ÍêÉÆµÄÒì³£´¦Àí»úÖÆ
-- **¿çÆ½Ì¨**: Ö§³ÖWindowsºÍLinux
+- **Single Header File**: Only need to include `fasthttp.hpp`
+- **Complete HTTP Support**: Supports GET, POST, PUT, DELETE, HEAD, OPTIONS, PATCH methods
+- **HTTPS Support**: Uses WinINet on Windows and OpenSSL on Linux
+- **Easy to Use**: Provides fluent API and global convenience functions
+- **Custom Headers**: Support for setting arbitrary HTTP headers
+- **JSON Support**: Built-in convenient methods for JSON requests
+- **Authentication**: Supports Basic Auth and Bearer Token
+- **Timeout Control**: Configurable request timeout
+- **Exception Handling**: Comprehensive exception handling mechanism
+- **Cross-Platform**: Supports Windows and Linux
 
-## ¿ìËÙ¿ªÊ¼
+## Quick Start
 
-### »ù±¾ÓÃ·¨
+### Basic Usage
 
 ```cpp
 #include "fasthttp.hpp"
@@ -25,21 +25,21 @@ FastHTTPÊÇÒ»¸öÇáÁ¿¼¶¡¢Ò×ÓÃµÄC++ HTTP¿Í»§¶Ë¿â£¬Ö»ĞèÒª°üº¬Ò»¸öÍ·ÎÄ¼ş¼´¿ÉÊ¹ÓÃ¡£Ö§³Ö
 
 int main() {
     try {
-        // ¼òµ¥µÄGETÇëÇó
+        // Simple GET request
         auto response = fasthttp::get("https://api.github.com/users/octocat");
         
         if (response.isSuccess()) {
-            std::cout << "ÏìÓ¦: " << response.getBody() << std::endl;
+            std::cout << "Response: " << response.getBody() << std::endl;
         }
     } catch (const fasthttp::HttpException& e) {
-        std::cerr << "ÇëÇóÊ§°Ü: " << e.what() << std::endl;
+        std::cerr << "Request failed: " << e.what() << std::endl;
     }
     
     return 0;
 }
 ```
 
-### Ê¹ÓÃHttpClientÀà
+### Using HttpClient Class
 
 ```cpp
 #include "fasthttp.hpp"
@@ -47,158 +47,158 @@ int main() {
 int main() {
     fasthttp::HttpClient client;
     
-    // ÉèÖÃÄ¬ÈÏ³¬Ê±Ê±¼ä
-    client.setDefaultTimeout(10000); // 10Ãë
+    // Set default timeout
+    client.setDefaultTimeout(10000); // 10 seconds
     
-    // ÉèÖÃÄ¬ÈÏÇëÇóÍ·
+    // Set default headers
     client.setDefaultHeader("User-Agent", "MyApp/1.0");
     
-    // ·¢ËÍÇëÇó
+    // Send request
     auto response = client.get("https://httpbin.org/get");
     
     return 0;
 }
 ```
 
-## API²Î¿¼
+## API Reference
 
-### È«¾Ö±ã½İº¯Êı
+### Global Convenience Functions
 
 ```cpp
-// GETÇëÇó
+// GET request
 fasthttp::HttpResponse get(const std::string& url);
 
-// POSTÇëÇó
+// POST request
 fasthttp::HttpResponse post(const std::string& url, const std::string& data = "");
 
-// PUTÇëÇó
+// PUT request
 fasthttp::HttpResponse put(const std::string& url, const std::string& data = "");
 
-// DELETEÇëÇó
+// DELETE request
 fasthttp::HttpResponse del(const std::string& url);
 
-// POST JSONÊı¾İ
+// POST JSON data
 fasthttp::HttpResponse postJson(const std::string& url, const std::string& json);
 ```
 
-### HttpClientÀà
+### HttpClient Class
 
 ```cpp
 class HttpClient {
 public:
-    // ¹¹Ôìº¯ÊıºÍÎö¹¹º¯Êı
+    // Constructor and destructor
     HttpClient();
     ~HttpClient();
     
-    // ÅäÖÃ·½·¨
+    // Configuration methods
     void setDefaultTimeout(int timeoutMs);
     void setDefaultHeader(const std::string& key, const std::string& value);
     
-    // ÇëÇóÖ´ĞĞ
+    // Request execution
     HttpResponse execute(const HttpRequest& request);
     
-    // ±ã½İ·½·¨
+    // Convenience methods
     HttpResponse get(const std::string& url);
     HttpResponse post(const std::string& url, const std::string& data = "");
     HttpResponse put(const std::string& url, const std::string& data = "");
     HttpResponse del(const std::string& url);
     HttpResponse patch(const std::string& url, const std::string& data = "");
     
-    // JSON·½·¨
+    // JSON methods
     HttpResponse postJson(const std::string& url, const std::string& json);
     HttpResponse putJson(const std::string& url, const std::string& json);
 };
 ```
 
-### HttpRequestÀà
+### HttpRequest Class
 
 ```cpp
 class HttpRequest {
 public:
-    // ¹¹Ôìº¯Êı
+    // Constructor
     HttpRequest(Method method, const std::string& url);
     
-    // Á´Ê½ÅäÖÃ·½·¨
+    // Fluent configuration methods
     HttpRequest& setBody(const std::string& body);
     HttpRequest& setTimeout(int timeoutMs);
     HttpRequest& setHeader(const std::string& key, const std::string& value);
     HttpRequest& addHeader(const std::string& key, const std::string& value);
     
-    // ÄÚÈİÀàĞÍÉèÖÃ
+    // Content type settings
     HttpRequest& setContentType(const std::string& contentType);
     HttpRequest& setJsonContent();
     HttpRequest& setFormContent();
     
-    // Éí·İÑéÖ¤
+    // Authentication
     HttpRequest& setBasicAuth(const std::string& username, const std::string& password);
     HttpRequest& setBearerToken(const std::string& token);
 };
 ```
 
-### HttpResponseÀà
+### HttpResponse Class
 
 ```cpp
 class HttpResponse {
 public:
-    // ×´Ì¬»ñÈ¡
+    // Status retrieval
     int getStatusCode() const;
     const std::string& getStatusMessage() const;
     const std::string& getBody() const;
     
-    // ÇëÇóÍ·²Ù×÷
+    // Header operations
     std::string getHeader(const std::string& key) const;
     bool hasHeader(const std::string& key) const;
     const std::map<std::string, std::string>& getHeaders() const;
     
-    // ×´Ì¬¼ì²é
-    bool isSuccess() const;        // 2xx×´Ì¬Âë
-    bool isRedirect() const;       // 3xx×´Ì¬Âë
-    bool isClientError() const;    // 4xx×´Ì¬Âë
-    bool isServerError() const;    // 5xx×´Ì¬Âë
+    // Status checks
+    bool isSuccess() const;        // 2xx status codes
+    bool isRedirect() const;       // 3xx status codes
+    bool isClientError() const;    // 4xx status codes
+    bool isServerError() const;    // 5xx status codes
     
-    // ×ª»»Îª×Ö·û´®
+    // Convert to string
     std::string toString() const;
 };
 ```
 
-## Ê¹ÓÃÊ¾Àı
+## Usage Examples
 
-### ·¢ËÍJSONÊı¾İ
+### Sending JSON Data
 
 ```cpp
 fasthttp::HttpClient client;
 
 std::string jsonData = R"({
-    "name": "ÕÅÈı",
+    "name": "John Doe",
     "age": 25,
-    "email": "zhangsan@example.com"
+    "email": "john.doe@example.com"
 })";
 
 auto response = client.postJson("https://api.example.com/users", jsonData);
 
 if (response.isSuccess()) {
-    std::cout << "ÓÃ»§´´½¨³É¹¦: " << response.getBody() << std::endl;
+    std::cout << "User created successfully: " << response.getBody() << std::endl;
 } else {
-    std::cout << "´´½¨Ê§°Ü: " << response.getStatusCode() << std::endl;
+    std::cout << "Creation failed: " << response.getStatusCode() << std::endl;
 }
 ```
 
-### Ê¹ÓÃÉí·İÑéÖ¤
+### Using Authentication
 
 ```cpp
 fasthttp::HttpRequest request(fasthttp::Method::GET, "https://api.example.com/protected");
 
-// BasicÈÏÖ¤
+// Basic authentication
 request.setBasicAuth("username", "password");
 
-// »òÕßÊ¹ÓÃBearer Token
+// Or use Bearer Token
 // request.setBearerToken("your-jwt-token");
 
 fasthttp::HttpClient client;
 auto response = client.execute(request);
 ```
 
-### ×Ô¶¨ÒåÇëÇóÍ·
+### Custom Headers
 
 ```cpp
 fasthttp::HttpRequest request(fasthttp::Method::POST, "https://api.example.com/data");
@@ -212,46 +212,46 @@ fasthttp::HttpClient client;
 auto response = client.execute(request);
 ```
 
-### ´íÎó´¦Àí
+### Error Handling
 
 ```cpp
 try {
     auto response = fasthttp::get("https://invalid-url.example.com");
     
     if (response.isSuccess()) {
-        std::cout << "ÇëÇó³É¹¦" << std::endl;
+        std::cout << "Request successful" << std::endl;
     } else if (response.isClientError()) {
-        std::cout << "¿Í»§¶Ë´íÎó: " << response.getStatusCode() << std::endl;
+        std::cout << "Client error: " << response.getStatusCode() << std::endl;
     } else if (response.isServerError()) {
-        std::cout << "·şÎñÆ÷´íÎó: " << response.getStatusCode() << std::endl;
+        std::cout << "Server error: " << response.getStatusCode() << std::endl;
     }
     
 } catch (const fasthttp::NetworkException& e) {
-    std::cerr << "ÍøÂç´íÎó: " << e.what() << std::endl;
+    std::cerr << "Network error: " << e.what() << std::endl;
 } catch (const fasthttp::TimeoutException& e) {
-    std::cerr << "ÇëÇó³¬Ê±: " << e.what() << std::endl;
+    std::cerr << "Request timeout: " << e.what() << std::endl;
 } catch (const fasthttp::HttpException& e) {
-    std::cerr << "HTTP´íÎó: " << e.what() << std::endl;
+    std::cerr << "HTTP error: " << e.what() << std::endl;
 }
 ```
 
-## ±àÒëËµÃ÷
+## Build Instructions
 
 ### Windows (Visual Studio)
 
 ```bash
-# Ö±½Ó±àÒë£¬¿â»á×Ô¶¯Á´½ÓËùĞèµÄWindows¿â
-cl /EHsc example.cpp
+# Direct compilation, library automatically links required Windows libraries
+cl /EHsc /std:c++14 example.cpp
 ```
 
 ### Linux
 
 ```bash
-# ĞèÒªÁ´½ÓOpenSSL¿âÓÃÓÚHTTPSÖ§³Ö
+# Requires linking OpenSSL library for HTTPS support
 g++ -std=c++14 -o example example.cpp -lssl -lcrypto
 ```
 
-### CMakeÊ¾Àı
+### CMake Example
 
 ```cmake
 cmake_minimum_required(VERSION 3.10)
@@ -260,26 +260,314 @@ project(MyProject)
 set(CMAKE_CXX_STANDARD 14)
 
 if(WIN32)
-    # Windows²»ĞèÒª¶îÍâ¿â
+    # Windows doesn't require additional libraries
     add_executable(myapp main.cpp)
 else()
-    # LinuxĞèÒªOpenSSL
+    # Linux requires OpenSSL
     find_package(OpenSSL REQUIRED)
     add_executable(myapp main.cpp)
     target_link_libraries(myapp OpenSSL::SSL OpenSSL::Crypto)
 endif()
 ```
 
-## ÒÀÀµËµÃ÷
+## Dependencies
 
-- **Windows**: Ê¹ÓÃWinINet API£¬ÎŞĞè¶îÍâÒÀÀµ
-- **Linux**: ĞèÒªOpenSSL¿âÓÃÓÚHTTPSÖ§³Ö
-- **C++±ê×¼**: ĞèÒªC++14»ò¸ü¸ß°æ±¾
+- **Windows**: Uses WinINet API, no additional dependencies required
+- **Linux**: Requires OpenSSL library for HTTPS support
+- **C++ Standard**: Requires C++14 or higher
 
-## Ğí¿ÉÖ¤
+## License
 
 MIT License
 
-## ¹±Ï×
+## Contributing
 
-»¶Ó­Ìá½»IssueºÍPull RequestÀ´¸Ä½øÕâ¸ö¿â¡£
+Welcome to submit Issues and Pull Requests to improve this library.
+
+---
+
+# FastHTTP - å•å¤´æ–‡ä»¶C++ HTTPå®¢æˆ·ç«¯åº“
+
+FastHTTPæ˜¯ä¸€ä¸ªè½»é‡çº§ã€æ˜“ç”¨çš„C++ HTTPå®¢æˆ·ç«¯åº“ï¼Œåªéœ€è¦åŒ…å«ä¸€ä¸ªå¤´æ–‡ä»¶å³å¯ä½¿ç”¨ã€‚æ”¯æŒHTTPå’ŒHTTPSè¯·æ±‚ï¼Œå…¼å®¹C++14æ ‡å‡†ã€‚
+
+## ç‰¹æ€§
+
+- **å•å¤´æ–‡ä»¶**: åªéœ€åŒ…å« `fasthttp.hpp` å³å¯ä½¿ç”¨
+- **å®Œæ•´çš„HTTPæ”¯æŒ**: æ”¯æŒGET, POST, PUT, DELETE, HEAD, OPTIONS, PATCHæ–¹æ³•
+- **HTTPSæ”¯æŒ**: åœ¨Windowsä¸Šä½¿ç”¨WinINetï¼Œåœ¨Linuxä¸Šä½¿ç”¨OpenSSL
+- **ç®€å•æ˜“ç”¨**: æä¾›é“¾å¼APIå’Œå…¨å±€ä¾¿æ·å‡½æ•°
+- **è‡ªå®šä¹‰è¯·æ±‚å¤´**: æ”¯æŒè®¾ç½®ä»»æ„HTTPè¯·æ±‚å¤´
+- **JSONæ”¯æŒ**: å†…ç½®JSONè¯·æ±‚ä¾¿æ·æ–¹æ³•
+- **èº«ä»½éªŒè¯**: æ”¯æŒBasic Authå’ŒBearer Token
+- **è¶…æ—¶æ§åˆ¶**: å¯é…ç½®è¯·æ±‚è¶…æ—¶æ—¶é—´
+- **å¼‚å¸¸å¤„ç†**: å®Œå–„çš„å¼‚å¸¸å¤„ç†æœºåˆ¶
+- **è·¨å¹³å°**: æ”¯æŒWindowså’ŒLinux
+
+## å¿«é€Ÿå¼€å§‹
+
+### åŸºæœ¬ç”¨æ³•
+
+```cpp
+#include "fasthttp.hpp"
+#include <iostream>
+
+int main() {
+    try {
+        // ç®€å•çš„GETè¯·æ±‚
+        auto response = fasthttp::get("https://api.github.com/users/octocat");
+        
+        if (response.isSuccess()) {
+            std::cout << "å“åº”: " << response.getBody() << std::endl;
+        }
+    } catch (const fasthttp::HttpException& e) {
+        std::cerr << "è¯·æ±‚å¤±è´¥: " << e.what() << std::endl;
+    }
+    
+    return 0;
+}
+```
+
+### ä½¿ç”¨HttpClientç±»
+
+```cpp
+#include "fasthttp.hpp"
+
+int main() {
+    fasthttp::HttpClient client;
+    
+    // è®¾ç½®é»˜è®¤è¶…æ—¶æ—¶é—´
+    client.setDefaultTimeout(10000); // 10ç§’
+    
+    // è®¾ç½®é»˜è®¤è¯·æ±‚å¤´
+    client.setDefaultHeader("User-Agent", "MyApp/1.0");
+    
+    // å‘é€è¯·æ±‚
+    auto response = client.get("https://httpbin.org/get");
+    
+    return 0;
+}
+```
+
+## APIå‚è€ƒ
+
+### å…¨å±€ä¾¿æ·å‡½æ•°
+
+```cpp
+// GETè¯·æ±‚
+fasthttp::HttpResponse get(const std::string& url);
+
+// POSTè¯·æ±‚
+fasthttp::HttpResponse post(const std::string& url, const std::string& data = "");
+
+// PUTè¯·æ±‚
+fasthttp::HttpResponse put(const std::string& url, const std::string& data = "");
+
+// DELETEè¯·æ±‚
+fasthttp::HttpResponse del(const std::string& url);
+
+// POST JSONæ•°æ®
+fasthttp::HttpResponse postJson(const std::string& url, const std::string& json);
+```
+
+### HttpClientç±»
+
+```cpp
+class HttpClient {
+public:
+    // æ„é€ å‡½æ•°å’Œææ„å‡½æ•°
+    HttpClient();
+    ~HttpClient();
+    
+    // é…ç½®æ–¹æ³•
+    void setDefaultTimeout(int timeoutMs);
+    void setDefaultHeader(const std::string& key, const std::string& value);
+    
+    // è¯·æ±‚æ‰§è¡Œ
+    HttpResponse execute(const HttpRequest& request);
+    
+    // ä¾¿æ·æ–¹æ³•
+    HttpResponse get(const std::string& url);
+    HttpResponse post(const std::string& url, const std::string& data = "");
+    HttpResponse put(const std::string& url, const std::string& data = "");
+    HttpResponse del(const std::string& url);
+    HttpResponse patch(const std::string& url, const std::string& data = "");
+    
+    // JSONæ–¹æ³•
+    HttpResponse postJson(const std::string& url, const std::string& json);
+    HttpResponse putJson(const std::string& url, const std::string& json);
+};
+```
+
+### HttpRequestç±»
+
+```cpp
+class HttpRequest {
+public:
+    // æ„é€ å‡½æ•°
+    HttpRequest(Method method, const std::string& url);
+    
+    // é“¾å¼é…ç½®æ–¹æ³•
+    HttpRequest& setBody(const std::string& body);
+    HttpRequest& setTimeout(int timeoutMs);
+    HttpRequest& setHeader(const std::string& key, const std::string& value);
+    HttpRequest& addHeader(const std::string& key, const std::string& value);
+    
+    // å†…å®¹ç±»å‹è®¾ç½®
+    HttpRequest& setContentType(const std::string& contentType);
+    HttpRequest& setJsonContent();
+    HttpRequest& setFormContent();
+    
+    // èº«ä»½éªŒè¯
+    HttpRequest& setBasicAuth(const std::string& username, const std::string& password);
+    HttpRequest& setBearerToken(const std::string& token);
+};
+```
+
+### HttpResponseç±»
+
+```cpp
+class HttpResponse {
+public:
+    // çŠ¶æ€è·å–
+    int getStatusCode() const;
+    const std::string& getStatusMessage() const;
+    const std::string& getBody() const;
+    
+    // è¯·æ±‚å¤´æ“ä½œ
+    std::string getHeader(const std::string& key) const;
+    bool hasHeader(const std::string& key) const;
+    const std::map<std::string, std::string>& getHeaders() const;
+    
+    // çŠ¶æ€æ£€æŸ¥
+    bool isSuccess() const;        // 2xxçŠ¶æ€ç 
+    bool isRedirect() const;       // 3xxçŠ¶æ€ç 
+    bool isClientError() const;    // 4xxçŠ¶æ€ç 
+    bool isServerError() const;    // 5xxçŠ¶æ€ç 
+    
+    // è½¬æ¢ä¸ºå­—ç¬¦ä¸²
+    std::string toString() const;
+};
+```
+
+## ä½¿ç”¨ç¤ºä¾‹
+
+### å‘é€JSONæ•°æ®
+
+```cpp
+fasthttp::HttpClient client;
+
+std::string jsonData = R"({
+    "name": "å¼ ä¸‰",
+    "age": 25,
+    "email": "zhangsan@example.com"
+})";
+
+auto response = client.postJson("https://api.example.com/users", jsonData);
+
+if (response.isSuccess()) {
+    std::cout << "ç”¨æˆ·åˆ›å»ºæˆåŠŸ: " << response.getBody() << std::endl;
+} else {
+    std::cout << "åˆ›å»ºå¤±è´¥: " << response.getStatusCode() << std::endl;
+}
+```
+
+### ä½¿ç”¨èº«ä»½éªŒè¯
+
+```cpp
+fasthttp::HttpRequest request(fasthttp::Method::GET, "https://api.example.com/protected");
+
+// Basicè®¤è¯
+request.setBasicAuth("username", "password");
+
+// æˆ–è€…ä½¿ç”¨Bearer Token
+// request.setBearerToken("your-jwt-token");
+
+fasthttp::HttpClient client;
+auto response = client.execute(request);
+```
+
+### è‡ªå®šä¹‰è¯·æ±‚å¤´
+
+```cpp
+fasthttp::HttpRequest request(fasthttp::Method::POST, "https://api.example.com/data");
+
+request.setHeader("Content-Type", "application/xml")
+       .setHeader("X-API-Key", "your-api-key")
+       .setHeader("Accept", "application/json")
+       .setBody("<xml>data</xml>");
+
+fasthttp::HttpClient client;
+auto response = client.execute(request);
+```
+
+### é”™è¯¯å¤„ç†
+
+```cpp
+try {
+    auto response = fasthttp::get("https://invalid-url.example.com");
+    
+    if (response.isSuccess()) {
+        std::cout << "è¯·æ±‚æˆåŠŸ" << std::endl;
+    } else if (response.isClientError()) {
+        std::cout << "å®¢æˆ·ç«¯é”™è¯¯: " << response.getStatusCode() << std::endl;
+    } else if (response.isServerError()) {
+        std::cout << "æœåŠ¡å™¨é”™è¯¯: " << response.getStatusCode() << std::endl;
+    }
+    
+} catch (const fasthttp::NetworkException& e) {
+    std::cerr << "ç½‘ç»œé”™è¯¯: " << e.what() << std::endl;
+} catch (const fasthttp::TimeoutException& e) {
+    std::cerr << "è¯·æ±‚è¶…æ—¶: " << e.what() << std::endl;
+} catch (const fasthttp::HttpException& e) {
+    std::cerr << "HTTPé”™è¯¯: " << e.what() << std::endl;
+}
+```
+
+## ç¼–è¯‘è¯´æ˜
+
+### Windows (Visual Studio)
+
+```bash
+# ç›´æ¥ç¼–è¯‘ï¼Œåº“ä¼šè‡ªåŠ¨é“¾æ¥æ‰€éœ€çš„Windowsåº“
+cl /EHsc /std:c++14 example.cpp
+```
+
+### Linux
+
+```bash
+# éœ€è¦é“¾æ¥OpenSSLåº“ç”¨äºHTTPSæ”¯æŒ
+g++ -std=c++14 -o example example.cpp -lssl -lcrypto
+```
+
+### CMakeç¤ºä¾‹
+
+```cmake
+cmake_minimum_required(VERSION 3.10)
+project(MyProject)
+
+set(CMAKE_CXX_STANDARD 14)
+
+if(WIN32)
+    # Windowsä¸éœ€è¦é¢å¤–åº“
+    add_executable(myapp main.cpp)
+else()
+    # Linuxéœ€è¦OpenSSL
+    find_package(OpenSSL REQUIRED)
+    add_executable(myapp main.cpp)
+    target_link_libraries(myapp OpenSSL::SSL OpenSSL::Crypto)
+endif()
+```
+
+## ä¾èµ–è¯´æ˜
+
+- **Windows**: ä½¿ç”¨WinINet APIï¼Œæ— éœ€é¢å¤–ä¾èµ–
+- **Linux**: éœ€è¦OpenSSLåº“ç”¨äºHTTPSæ”¯æŒ
+- **C++æ ‡å‡†**: éœ€è¦C++14æˆ–æ›´é«˜ç‰ˆæœ¬
+
+## è®¸å¯è¯
+
+MIT License
+
+## è´¡çŒ®
+
+æ¬¢è¿æäº¤Issueå’ŒPull Requestæ¥æ”¹è¿›è¿™ä¸ªåº“ã€‚
